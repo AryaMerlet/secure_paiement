@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('stripe_id')->unique();
             $table->string('stripe_status');
             $table->string('stripe_price')->nullable();
+            $table->float('price');
             $table->timestamps();
 
             // $table->index(['user_id', 'stripe_status']);

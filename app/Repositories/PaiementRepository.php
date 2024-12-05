@@ -59,6 +59,7 @@ class PaiementRepository
         $paiement->stripe_id = $inputs['stripe_id'];
         $paiement->stripe_status = $inputs['stripe_status'];
         $paiement->stripe_price = $inputs['stripe_price'];
+        $paiement->price = $inputs['price'];
         $paiement->user_id = $inputs['user_id'];
         $paiement->card_id = $inputs['card_id'];
         $paiement->save();
