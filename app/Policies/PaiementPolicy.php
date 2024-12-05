@@ -21,7 +21,7 @@ class PaiementPolicy
      */
     public function view(User $user, paiement $paiement): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -29,7 +29,7 @@ class PaiementPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->isAn('user');
     }
 
     /**
@@ -37,7 +37,7 @@ class PaiementPolicy
      */
     public function update(User $user, paiement $paiement): bool
     {
-        return false;
+        return true;
     }
 
     /**
