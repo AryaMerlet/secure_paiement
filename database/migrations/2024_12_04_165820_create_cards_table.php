@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('cards', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->restrained()->restrictOnDelete();
+            $table->foreignIdFor(User::class)->constrained()->restrictOnDelete();
             $table->string('name');
             $table->string('type');
             $table->string('number',16)->unique;

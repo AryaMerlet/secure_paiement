@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Model;
  *
  *
  * @property int $id
- * @property int $App\Models\User
- * @property int $App\Models\Card
+ * @property int $user_id
+ * @property int $card_id
  * @property string $type
  * @property string $stripe_id
  * @property string $stripe_status
@@ -39,17 +39,19 @@ class paiement extends Model
 
     /**
      * Summary of user
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    function user(){
-        $this->belongsTo(User::class);
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     /**
      * Summary of card
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    function card(){
-        $this->belongsTo(Card::class);
+    public function card()
+    {
+        return $this->belongsTo(Card::class);
     }
 }

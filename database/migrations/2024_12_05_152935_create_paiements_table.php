@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('paiements', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->restrained()->restrictOnDelete();
-            $table->foreignIdFor(Card::class)->restrained()->restrictOnDelete();
+            $table->foreignIdFor(User::class)->constrained()->restrictOnDelete();
+            $table->foreignIdFor(Card::class)->constrained()->restrictOnDelete();
             $table->string('type');
             $table->string('stripe_id')->unique();
             $table->string('stripe_status');
