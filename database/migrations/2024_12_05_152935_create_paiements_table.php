@@ -17,10 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->restrictOnDelete();
             $table->foreignIdFor(Card::class)->constrained()->restrictOnDelete();
-            $table->string('type');
-            $table->string('stripe_id')->unique();
-            $table->string('stripe_status');
-            $table->string('stripe_price')->nullable();
+            $table->decimal('refunded_amount', 8, 2)->default(0)->nullable();
             $table->float('price');
             $table->timestamps();
 

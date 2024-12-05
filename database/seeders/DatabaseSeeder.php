@@ -16,14 +16,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
         for ($i = 0; $i < 10; $i++){
             $user = User::factory()->create();
             Bouncer::assign('user')->to($user);
         }
-        Card::factory()->count(20)->create();
 
-        $user = User::factory()->create([
+        $testuser = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@secure.com',
             'password' => 'T&s7U53rt&s7'
@@ -35,9 +33,13 @@ class DatabaseSeeder extends Seeder
             'password' => 'P@ssw0rd1337'
         ]);
 
+        Card::factory()->count(30)->create();
+        Paiement::factory()->count(50)->create();
+
         Bouncer::allow('admin')->to('retrieve',Paiement::class);
         Bouncer::allow('admin')->to('refund',Paiement::class);
         Bouncer::allow('admin')->to('retrieve',Card::class);
+
 
         Bouncer::assign('admin')->to($admin);
 
@@ -48,6 +50,6 @@ class DatabaseSeeder extends Seeder
         Bouncer::allow('user')->to('delete',Card::class);
         Bouncer::allow('user')->to('update',Card::class);
 
-        Bouncer::assign('user')->to($user);
+        Bouncer::assign('user')->to($testuser);
     }
 }

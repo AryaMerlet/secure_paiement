@@ -6,15 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property int $user_id
  * @property int $card_id
- * @property string $type
- * @property string $stripe_id
- * @property string $stripe_status
- * @property string|null $stripe_price
+ * @property string|null $refunded_amount
  * @property float $price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -28,10 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement wherePrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereStripeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereStripePrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereStripeStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereRefundedAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereUserId($value)
  * @mixin \Eloquent

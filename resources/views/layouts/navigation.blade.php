@@ -15,6 +15,23 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    @auth
+                        @if (auth()->user()->isAn('admin'))
+                            <x-nav-link :href="route('paiements.index')" :active="request()->routeIs('paiements.index')">
+                                {{ __('All paiements') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('cards.index')" :active="request()->routeIs('cards.index')">
+                                {{ __('All Cards') }}
+                            </x-nav-link>
+                        @else
+                            <x-nav-link :href="route('paiements.index')" :active="request()->routeIs('paiements.index')">
+                                {{ __('My Paiements') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('cards.index')" :active="request()->routeIs('cards.index')">
+                                {{ __('My Cards') }}
+                            </x-nav-link>
+                        @endif
+                    @endauth
                 </div>
             </div>
 

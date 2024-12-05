@@ -7,6 +7,7 @@ use App\Http\Requests\StorepaiementRequest;
 use App\Http\Requests\UpdatepaiementRequest;
 use App\Models\Card;
 use App\Models\paiement;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class PaiementController extends Controller
@@ -28,7 +29,8 @@ class PaiementController extends Controller
     {
         $user = Auth::user();
         if($user->isan('admin')){
-            $paiments = Paiement::with(['users','cards'])->get();
+            $users = User::all();
+            $paiments = Paiement::with(['user','card'])->get();
             return view ('paiements.index',compact('paiments','users', 'user'));
         }
         else if ($user->isa('user')){
@@ -53,7 +55,7 @@ class PaiementController extends Controller
             return redirect()->route('paiements.index')->with('error', 'You do not have permission to create new paiements.');
         }
         $cards = Card::where('user_id',$user->id)->get();
-        return view('paiement.create', compact('cards'));
+        return view('paiements.create', compact('cards'));
     }
 
 
@@ -66,9 +68,9 @@ class PaiementController extends Controller
         if ($user->can('create', Paiement::class)) {
             $data = $request->all();
             $this->paiementRepository->store($data);
-            return redirect()->route('tickets.index')->with('success', 'Ticket created successfully!');
+            return redirect()->route('paiements.index')->with('success', 'Paiement created successfully!');
         } else {
-            return redirect()->route('tickets.index')->with('error', 'You do not have permission to create new tickets.');
+            return redirect()->route('paiements.index')->with('error', 'You do not have permission to create new paiements.');
         }
     }
 
@@ -91,24 +93,41 @@ class PaiementController extends Controller
             return redirect()->route('paiements.index')->with('error', 'You do not have permission to interact with this paiement.');
         }
 
-        $cards = Card::where('user_id',$user->id)->get();
+        return view('paiements.edit', compact('paiement','user'));
 
-        return view('paiements.edit', compact('cards','user'));
+        // $cards = Card::where('card_id',$paiement->card_id)->get();
+
+        // return view('paiements.edit', compact('cards','user'));
 
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatepaiementRequest $request, paiement $paiement)
+    public function update(UpdatepaiementRequest $request, Paiement $paiement)
     {
         $user = Auth::user();
+
+        if (!$user->can('refund', Paiement::class)) {
+            return redirect()->route('paiements.index')->with('error', 'You do not have permission to refund this paiement.');
+        }
+
+        $data = $request->validate([
+            'refund_amount' => ['required', 'numeric', 'min:0', 'max:' . ($paiement->price - $paiement->refunded_amount)],
+        ]);
+
+        // Update the refunded amount
+        // $this->paiementRepository->update($paiement,$data);
+        $paiement->refunded_amount = ($paiement->refunded_amount ?? 0) + $data['refund_amount'];
+        $paiement->save();
+
+    return redirect()->route('paiements.index')->with('success', 'Paiement refunded successfully!');
         if ($user->can('refund', Paiement::class)) {
             $data = $request->all();
-            $this->paiementRepository->update($paiement,$data);
-            return redirect()->route('tickets.index')->with('success', 'Paiement refunded successfully!');
+
+            return redirect()->route('paiements.index')->with('success', 'Paiement refunded successfully!');
         } else {
-            return redirect()->route('tickets.index')->with('error', 'You do not have permission to refund this paiement.');
+            return redirect()->route('paiements.index')->with('error', 'You do not have permission to refund this paiement.');
         }
     }
 
