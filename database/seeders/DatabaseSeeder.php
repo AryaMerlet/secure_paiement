@@ -38,12 +38,17 @@ class DatabaseSeeder extends Seeder
         Bouncer::allow('admin')->to('retrieve',Paiement::class);
         Bouncer::allow('admin')->to('update',Paiement::class);
         Bouncer::allow('admin')->to('delete',Paiement::class);
+        Bouncer::allow('admin')->to('retrieve',Card::class);
 
         Bouncer::assign('admin')->to($admin);
 
         Bouncer::allow('user')->to('retrieve',Paiement::class);
         Bouncer::allow('user')->to('create',Paiement::class);
         Bouncer::allow('user')->to('update',Paiement::class);
+        Bouncer::allow('user')->to('retrieve',Card::class);
+        Bouncer::allow('user')->to('create',Card::class);
+        Bouncer::allow('user')->to('delete',Card::class);
+        Bouncer::allow('user')->to('update',Card::class);
 
         Bouncer::assign('user')->to($user);
     }
