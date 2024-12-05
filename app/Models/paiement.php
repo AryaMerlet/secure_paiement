@@ -15,21 +15,25 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $stripe_id
  * @property string $stripe_status
  * @property string|null $stripe_price
+ * @property float $price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Card $card
+ * @property-read \App\Models\User $user
  * @method static \Database\Factories\paiementFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereApp\Models\Card($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereApp\Models\User($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereCardId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereStripeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereStripePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereStripeStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereUserId($value)
  * @mixin \Eloquent
  */
 class paiement extends Model
