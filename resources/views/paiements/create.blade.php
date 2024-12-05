@@ -10,9 +10,15 @@
         <div class="mb-3">
             <label for="card_id" class="form-label">Card</label>
             <select name="card_id" id="card_id" class="form-select" required>
-                @foreach ($cards as $card)
-                    <option value="{{ $card->id }}">{{ $card->number }}</option>
-                @endforeach
+                @if (auth()->user()->isAdmin())
+                    @foreach ($cards as $card)
+                        <option value="{{ $card->id }}">{{ $card->number }}</option>
+                    @endforeach
+                @else
+                    @foreach (auth()->user()->cards as $card)
+                        <option value="{{ $card->id }}">{{ $card->number }}</option>
+                    @endforeach
+                @endif
             </select>
         </div>
 
