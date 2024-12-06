@@ -8,7 +8,7 @@ Ensure the following software is installed on your Linux system:
 2. **[Composer](https://getcomposer.org/download/)**: Dependency management tool for PHP
 3. **[Web Server](https://httpd.apache.org/download.cgi) (Apache)** or **[Nginx](https://nginx.org/en/download.html)**
 4. **[MySQL](https://dev.mysql.com/downloads/)** or **[PostgreSQL](https://www.postgresql.org/download/)**
-5. **[Node.js](https://nodejs.org/en/download/)** & **[npm](https://www.npmjs.com/get-npm)**: Required for frontend asset compilation (optional but recommended)
+5. **[Node.js](https://nodejs.org/en/download/)** & **[npm](https://www.npmjs.com/get-npm)**: Required for frontend asset compilation
 6. **[Git](https://git-scm.com/download/linux)**: To clone the repository
 
 ---
