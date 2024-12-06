@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('type');
             $table->string('number',16)->unique();
-            $table->date('expiration_date');
+            $table->dateTime('expiration_date');
             $table->integer('code');
             $table->timestamps();
         });

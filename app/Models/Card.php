@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property string $type
  * @property string $number
- * @property string $expiration_date
+ * @property \Illuminate\Support\Carbon $expiration_date
  * @property int $code
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -50,4 +50,7 @@ class Card extends Model
     {
         return $this->hasMany(Card::class);
     }
+    protected $casts = [
+        'expiration_date' => 'datetime',
+    ];
 }

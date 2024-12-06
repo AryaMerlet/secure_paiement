@@ -22,6 +22,10 @@ Route::middleware('auth')->group(function () {
         return view('dashboard');
     });
 
+    Route::get('test-view', function () {
+        return view('cards.index');
+    });
+
 });
 
 require __DIR__.'/auth.php';
