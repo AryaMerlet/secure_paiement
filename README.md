@@ -18,7 +18,7 @@ Ensure the following software is installed on your Linux system:
 ### 1. Clone the Repository
 
 Run the following command to clone the repository to your local system:
-    git clone https://github.com/your-username/your-repo-name.git
+    git clone https://github.com/AryaMerlet/secure_paiement.git
     cd secure_paiement
 
 Ensure the storage and bootstrap/cache directories are writable by your server:
