@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $code
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Card> $cards
+ * @property-read int|null $cards_count
  * @method static \Database\Factories\CardFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Card newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Card newQuery()

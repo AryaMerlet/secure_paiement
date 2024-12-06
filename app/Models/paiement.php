@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property int $user_id
  * @property int $card_id
- * @property string|null $refunded_amount
+ * @property string $refunded_amount
  * @property float $price
+ * @property string $token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Card $card
@@ -26,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereRefundedAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|paiement whereUserId($value)
  * @mixin \Eloquent
@@ -62,8 +64,8 @@ class paiement extends Model
 
         static::creating(function ($paiement) {
             do {
-                $token = Str::random(32); // Generate a random 32-character token
-            } while (self::where('token', $token)->exists()); // Ensure uniqueness
+                $token = bin2hex(random_bytes(16));
+            } while (self::where('token', $token)->exists());
             $paiement->token = $token;
         });
     }

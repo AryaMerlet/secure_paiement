@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Paiement;
-use Str;
 
 class PaiementRepository
 {
@@ -56,22 +55,17 @@ class PaiementRepository
      */
     private function save(Paiement $paiement, array $inputs)
     {
-        if (isset($inputs['price'])) {
-            $paiement->price = $inputs['price'];
+        if ($paiement->exists) {
+            if (!isset($inputs['token']) || $paiement->token !== $inputs['token']) {
+                throw new \Exception('Invalid or missing token for this operation.');
+            } else {
+                $paiement->refunded_amount += $inputs['refund_amount'];
+            }
+        } else{
+                $paiement->price = $inputs['price'];
+                $paiement->user_id = $inputs['user_id'];
+                $paiement->card_id = $inputs['card_id'];
         }
-        if (isset($inputs['user_id'])) {
-            $paiement->user_id = $inputs['user_id'];
-        }
-        if (isset($inputs['card_id'])) {
-            $paiement->card_id = $inputs['card_id'];
-        }
-        if (isset($inputs['refund_amount'])) {
-            $paiement->refunded_amount = ($paiement->refunded_amount ?? 0) + $inputs['refund_amount'];
-        }
-        // $paiement->price = $inputs['price'];
-        // $paiement->user_id = $inputs['user_id'];
-        // $paiement->card_id = $inputs['card_id'];
-        // $paiement->refunded_amount = ($paiement->refunded_amount ?? 0) + $inputs['refund_amount'];
 
         $paiement->save();
         return $paiement;
