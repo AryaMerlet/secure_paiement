@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCardRequest;
 use App\Http\Requests\UpdateCardRequest;
 use App\Models\Card;
+use Illuminate\Support\Facades\Auth;
 
 class CardController extends Controller
 {
@@ -13,7 +14,15 @@ class CardController extends Controller
      */
     public function index()
     {
-        //
+        if (Auth::user()->isAdmin()) {
+            // L'administrateur peut voir toutes les cartes
+            $cards = Card::all();
+        } else {
+            // Les utilisateurs normaux voient seulement leurs cartes
+            $cards = Auth::user()->cards;
+        }
+
+        return view('cards.index', compact('cards'));
     }
 
     /**
@@ -21,7 +30,7 @@ class CardController extends Controller
      */
     public function create()
     {
-        //
+        return view('cards.create');
     }
 
     /**
@@ -29,7 +38,11 @@ class CardController extends Controller
      */
     public function store(StoreCardRequest $request)
     {
-        //
+        $card = new Card($request->validated());
+        $card->user_id = Auth::id(); // Associer la carte à l'utilisateur connecté
+        $card->save();
+
+        return redirect()->route('cards.index')->with('success', 'Carte créée avec succès.');
     }
 
     /**
@@ -37,7 +50,12 @@ class CardController extends Controller
      */
     public function show(Card $card)
     {
-        //
+        // Vérifiez si l'utilisateur est un administrateur ou le propriétaire de la carte
+        if (Auth::user()->isAdmin() || $card->user_id === Auth::id()) {
+            return view('cards.show', compact('card'));
+        }
+
+        abort(403, 'Accès interdit');
     }
 
     /**
@@ -45,7 +63,12 @@ class CardController extends Controller
      */
     public function edit(Card $card)
     {
-        //
+        // Vérifiez si l'utilisateur est un administrateur ou le propriétaire de la carte
+        if (Auth::user()->isAdmin() || $card->user_id === Auth::id()) {
+            return view('cards.edit', compact('card'));
+        }
+
+        abort(403, 'Accès interdit');
     }
 
     /**
@@ -53,7 +76,13 @@ class CardController extends Controller
      */
     public function update(UpdateCardRequest $request, Card $card)
     {
-        //
+        // Vérifiez si l'utilisateur est un administrateur ou le propriétaire de la carte
+        if ($card->user_id === Auth::id()) {
+            $card->update($request->validated());
+            return redirect()->route('cards.index')->with('success', 'Carte mise à jour avec succès.');
+        }
+
+        abort(403, 'Accès interdit');
     }
 
     /**
@@ -61,6 +90,12 @@ class CardController extends Controller
      */
     public function destroy(Card $card)
     {
-        //
+        // Vérifiez si l'utilisateur est un administrateur ou le propriétaire de la carte
+        if ($card->user_id === Auth::id()) {
+            $card->delete();
+            return redirect()->route('cards.index')->with('success', 'Carte supprimée avec succès.');
+        }
+
+        abort(403, 'Accès interdit');
     }
 }
