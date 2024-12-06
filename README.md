@@ -4,12 +4,12 @@
 
 Ensure the following software is installed on your Linux system:
 
-1. **PHP**: Version 8.1 or higher
-2. **Composer**: Dependency management tool for PHP
-3. **Web Server**: Apache or Nginx
-4. **Database**: MySQL or PostgreSQL
-5. **Node.js & npm**: Required for frontend asset compilation (optional but recommended)
-6. **Git**: To clone the repository
+1. **[PHP](https://www.php.net/downloads.php)**: Version 8.1 or higher
+2. **[Composer](https://getcomposer.org/download/)**: Dependency management tool for PHP
+3. **[Web Server](https://httpd.apache.org/download.cgi) (Apache)** or **[Nginx](https://nginx.org/en/download.html)**
+4. **[MySQL](https://dev.mysql.com/downloads/)** or **[PostgreSQL](https://www.postgresql.org/download/)**
+5. **[Node.js](https://nodejs.org/en/download/)** & **[npm](https://www.npmjs.com/get-npm)**: Required for frontend asset compilation (optional but recommended)
+6. **[Git](https://git-scm.com/download/linux)**: To clone the repository
 
 ---
 
@@ -22,13 +22,19 @@ Run the following command to clone the repository to your local system:
     git clone https://github.com/AryaMerlet/secure_paiement.git
     cd secure_paiement
 
-Ensure the storage and bootstrap/cache directories are writable by your server:
-
-    chmod -R 775 storage bootstrap/cache
+### 2. Install PHP Dependencies
 
 Use Composer to install dependencies   
 
     composer install
+
+### 3. Set Permissions
+
+Ensure the storage and bootstrap/cache directories are writable by your server:
+
+    chmod -R 775 storage bootstrap/cache
+
+### 4. Set Up Environment Variables
 
 Create a .env file by copying the example .env.example file:
 
@@ -38,9 +44,13 @@ Edit the .env file to configure your database environment:
 
     nano .env
 
+### 5. Generate Application Key
+
 Run the following command to generate the application key:
 
     php artisan key:generate
+
+### 6. Set Up Database
 
 Run migrations to set up the database schema:
 
@@ -49,6 +59,8 @@ Run migrations to set up the database schema:
 (Optional) Seed the database with sample data:
 
     php artisan db:seed
+
+### 7. Frontend Assets
 
 Install and run NPM :
 
