@@ -17,20 +17,20 @@ class CardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        // if($user->isan('admin')){
+        if($user->isan('admin')){
             $cards = Card::all();
             $users  = User::all();
             return view('cards.index',compact('users', 'cards'));
-        // }
-        // else if ($user->isa('user')){
-            // $cards = Card::with(['users'])
-            // ->where('user_id', $user->id)
-            // ->get();
-            // return view('cards.index', compact('cards', 'user'));
-        // }
-        // else{
-        //     return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
-        // }
+        }
+        else if ($user->isa('user')){
+            $cards = Card::with(['users'])
+            ->where('user_id', $user->id)
+            ->get();
+            return view('cards.index', compact('cards', 'user'));
+        }
+        else{
+            return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
+        }
     }
 
     /**

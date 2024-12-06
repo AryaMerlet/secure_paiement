@@ -113,9 +113,10 @@ class PaiementController extends Controller
             return redirect()->route('paiements.index')->with('error', 'You do not have permission to refund this paiement.');
         }
 
-        // $data = $request->all();
         $data = $request->validated();
-
+        // $token = Paiement::where('id', $paiement->id)->get('token');
+        // $data['token'] = $token;
+        // dd($token);
         // Update the refunded amount
         $this->paiementRepository->update($paiement,$data);
         // $paiement->refunded_amount = ($paiement->refunded_amount ?? 0) + $data['refund_amount'];

@@ -43,6 +43,7 @@ class PaiementRepository
      */
     public function update(Paiement $paiement, array $inputs)
     {
+
         return $this->save($paiement, $inputs);
     }
 
@@ -56,11 +57,11 @@ class PaiementRepository
     private function save(Paiement $paiement, array $inputs)
     {
         if ($paiement->exists) {
-            if (!isset($inputs['token']) || $paiement->token !== $inputs['token']) {
-                throw new \Exception('Invalid or missing token for this operation.');
-            } else {
+            // if (!isset($paiement['token']) || $paiement->token !== $inputs['token']) {
+            //     throw new \Exception('Invalid or missing token for this operation.');
+            // } else {
                 $paiement->refunded_amount += $inputs['refund_amount'];
-            }
+            // }
         } else{
                 $paiement->price = $inputs['price'];
                 $paiement->user_id = $inputs['user_id'];
