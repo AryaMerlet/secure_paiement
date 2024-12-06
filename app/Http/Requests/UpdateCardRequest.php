@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Auth;
 class UpdateCardRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Summary of authorize
+     * @return bool
      */
     public function authorize(): bool
     {
@@ -16,16 +17,27 @@ class UpdateCardRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * Summary of rules
+     * @return array
      */
     public function rules(): array
     {
         return [
-            'price' => ['required', 'numeric', 'min:0'],
-            'user_id' => ['required', 'exists:users,id'],
-            'card_id' => ['required', 'exists:cards,id'],
+            'name' => ['required', 'string', 'max:255'],
+            'type' => ['required', 'string', 'in:credit,debit'], 
+            'expiration_date' => ['required', 'date', 'after:today'], 
+            'code' => ['required', 'digits:3'],
+        ];
+    }
+    /**
+     * Summary of messages
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'expiration_date.after' => 'The expiration date must be in the future.',
+            'code.digits' => 'The CVV code must be exactly 3 digits.',
         ];
     }
 }

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained()->restrictOnDelete();
             $table->string('name');
             $table->string('type');
-            $table->string('number',16)->unique;
+            $table->string('number',16)->unique();
             $table->date('expiration_date');
             $table->integer('code');
             $table->timestamps();

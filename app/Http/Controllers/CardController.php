@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Auth;
 class CardController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Summary of index
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
     public function index()
     {
@@ -30,20 +31,11 @@ class CardController extends Controller
         else{
             return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
         }
-
-        // if (Auth::user()->isAdmin()) {
-        //     // L'administrateur peut voir toutes les cartes
-        //     $cards = Card::all();
-        // } else {
-        //     // Les utilisateurs normaux voient seulement leurs cartes
-        //     $cards = Auth::user()->cards;
-        // }
-
-        // return view('cards.index', compact('cards'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Summary of create
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
     public function create()
     {
@@ -56,68 +48,83 @@ class CardController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Summary of store
+     * @param \App\Http\Requests\StoreCardRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreCardRequest $request)
     {
-        $card = new Card($request->validated());
-        $card->user_id = Auth::id(); // Associer la carte à l'utilisateur connecté
-        $card->save();
-
-        return redirect()->route('cards.index')->with('success', 'Carte créée avec succès.');
+        $user = Auth::user();
+        if (!$user->can('create', Card::class)) {
+            return redirect()->route('cards.index')->with('error', 'You do not have permission to create new cards.');
+        } else {
+            $card = new Card($request->validated());
+            $card->user_id = $user->id;
+            $card->save();
+            return redirect()->route('cards.index')->with('success', 'Card created successfully.');
+        }
     }
 
     /**
-     * Display the specified resource.
+     * Summary of show
+     * @param \App\Models\Card $card
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
     public function show(Card $card)
     {
-        // Vérifiez si l'utilisateur est un administrateur ou le propriétaire de la carte
-        if (Auth::user()->isAdmin() || $card->user_id === Auth::id()) {
+        $user = Auth::user();
+        if ($user->isA('admin') ||$card->user_id == $user->id){
             return view('cards.show', compact('card'));
+        } else{
+            return redirect()->route('cards.index')->with('error', 'You do not have permission to access this page.');
         }
-
-        abort(403, 'Accès interdit');
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Summary of edit
+     * @param \App\Models\Card $card
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
     public function edit(Card $card)
     {
-        // Vérifiez si l'utilisateur est un administrateur ou le propriétaire de la carte
-        if (Auth::user()->isA('admin') || $card->user_id === Auth::id()) {
+        $user = Auth::user();
+        if ($user->isA('admin') || $card->user_id === $user->id) {
             return view('cards.edit', compact('card'));
+        } else {
+            return redirect()->route('cards.index')->with('error', 'You do not have permission to access this page.');
         }
-
-        abort(403, 'Accès interdit');
     }
 
     /**
-     * Update the specified resource in storage.
+     * Summary of update
+     * @param \App\Http\Requests\UpdateCardRequest $request
+     * @param \App\Models\Card $card
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateCardRequest $request, Card $card)
     {
-        // Vérifiez si l'utilisateur est un administrateur ou le propriétaire de la carte
-        if ($card->user_id === Auth::id()) {
+        $user = Auth::user();
+        if ($card->user_id === $user->id) {
             $card->update($request->validated());
-            return redirect()->route('cards.index')->with('success', 'Carte mise à jour avec succès.');
+            return redirect()->route('cards.index')->with('success', 'Card updated successfully');
+        }else{
+            return redirect()->route('cards.index')->with('error', 'You do not have permission to access this page.');
         }
-
-        abort(403, 'Accès interdit');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Summary of destroy
+     * @param \App\Models\Card $card
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Card $card)
     {
-        // Vérifiez si l'utilisateur est un administrateur ou le propriétaire de la carte
-        if ($card->user_id === Auth::id()) {
+        $user = Auth::user();
+        if ($card->user_id === $user->id) {
             $card->delete();
-            return redirect()->route('cards.index')->with('success', 'Carte supprimée avec succès.');
+            return redirect()->route('cards.index')->with('success', 'Card deleted successfully');
+        }else{
+            return redirect()->route('cards.index')->with('error', 'You do not have permission to access this page.');
         }
-
-        abort(403, 'Accès interdit');
     }
 }
