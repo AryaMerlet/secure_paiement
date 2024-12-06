@@ -44,11 +44,13 @@ Edit the .env file to configure your database environment:
 
     nano .env
 
-##### DB_HOST=127.0.0.1
-##### DB_PORT=3306
-##### DB_DATABASE=secure_paiement
-##### DB_USERNAME=root
-##### DB_PASSWORD=
+update those lines to match your configuration
+
+###### DB_HOST=127.0.0.1
+###### DB_PORT=3306
+###### DB_DATABASE=secure_paiement
+###### DB_USERNAME=root
+###### DB_PASSWORD=
 
 ### 5. Generate Application Key
 
