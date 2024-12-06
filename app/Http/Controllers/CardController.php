@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCardRequest;
 use App\Http\Requests\UpdateCardRequest;
 use App\Models\Card;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class CardController extends Controller
@@ -14,15 +15,31 @@ class CardController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->isAdmin()) {
-            // L'administrateur peut voir toutes les cartes
+        $user = Auth::user();
+        if($user->isan('admin')){
             $cards = Card::all();
-        } else {
-            // Les utilisateurs normaux voient seulement leurs cartes
-            $cards = Auth::user()->cards;
+            $users  = User::all();
+            return view ('cards.index',compact('users', 'cards'));
+        }
+        else if ($user->isa('user')){
+            $cards = Card::with(['users'])
+            ->where('user_id', $user->id)
+            ->get();
+            return view ('cards.index',compact('cards', 'user'));
+        }
+        else{
+            return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
         }
 
-        return view('cards.index', compact('cards'));
+        // if (Auth::user()->isAdmin()) {
+        //     // L'administrateur peut voir toutes les cartes
+        //     $cards = Card::all();
+        // } else {
+        //     // Les utilisateurs normaux voient seulement leurs cartes
+        //     $cards = Auth::user()->cards;
+        // }
+
+        // return view('cards.index', compact('cards'));
     }
 
     /**
@@ -30,7 +47,12 @@ class CardController extends Controller
      */
     public function create()
     {
-        return view('cards.create');
+        $user = Auth::user();
+        if ($user->can('create',Card::class)){
+            return view('cards.create');
+        }else {
+            return redirect()->route('dashboard')->with('error', 'You do not have permission to create new cards.');
+        }
     }
 
     /**
@@ -64,7 +86,7 @@ class CardController extends Controller
     public function edit(Card $card)
     {
         // Vérifiez si l'utilisateur est un administrateur ou le propriétaire de la carte
-        if (Auth::user()->isAdmin() || $card->user_id === Auth::id()) {
+        if (Auth::user()->isA('admin') || $card->user_id === Auth::id()) {
             return view('cards.edit', compact('card'));
         }
 
