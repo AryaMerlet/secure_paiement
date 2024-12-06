@@ -34,7 +34,7 @@ class PaiementController extends Controller
             return view ('paiements.index',compact('paiments','users', 'user'));
         }
         else if ($user->isa('user')){
-            $paiments = Paiement::with(['cards'])
+            $paiments = Paiement::with(['card'])
             ->where('user_id', $user->id)
             ->get();
             return view ('paiements.index',compact('paiments', 'user'));
@@ -66,7 +66,8 @@ class PaiementController extends Controller
     {
         $user = Auth::user();
         if ($user->can('create', Paiement::class)) {
-            $data = $request->all();
+            $data = $request->validated();
+            // $data = $request->all();
             $this->paiementRepository->store($data);
             return redirect()->route('paiements.index')->with('success', 'Paiement created successfully!');
         } else {
@@ -112,23 +113,15 @@ class PaiementController extends Controller
             return redirect()->route('paiements.index')->with('error', 'You do not have permission to refund this paiement.');
         }
 
-        $data = $request->validate([
-            'refund_amount' => ['required', 'numeric', 'min:0', 'max:' . ($paiement->price - $paiement->refunded_amount)],
-        ]);
+        // $data = $request->all();
+        $data = $request->validated();
 
         // Update the refunded amount
-        // $this->paiementRepository->update($paiement,$data);
-        $paiement->refunded_amount = ($paiement->refunded_amount ?? 0) + $data['refund_amount'];
-        $paiement->save();
+        $this->paiementRepository->update($paiement,$data);
+        // $paiement->refunded_amount = ($paiement->refunded_amount ?? 0) + $data['refund_amount'];
+        // $paiement->save();
 
-    return redirect()->route('paiements.index')->with('success', 'Paiement refunded successfully!');
-        if ($user->can('refund', Paiement::class)) {
-            $data = $request->all();
-
-            return redirect()->route('paiements.index')->with('success', 'Paiement refunded successfully!');
-        } else {
-            return redirect()->route('paiements.index')->with('error', 'You do not have permission to refund this paiement.');
-        }
+        return redirect()->route('paiements.index')->with('success', 'Paiement refunded successfully!');
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\User;
 use App\Models\paiement;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Auth;
 
 class PaiementPolicy
 {
@@ -21,7 +22,7 @@ class PaiementPolicy
      */
     public function view(User $user, paiement $paiement): bool
     {
-        return true;
+        return $user->isAn('user') || $user->isA('admin');
     }
 
     /**
@@ -37,7 +38,7 @@ class PaiementPolicy
      */
     public function update(User $user, paiement $paiement): bool
     {
-        return true;
+        return $user->isA('admin');
     }
 
     /**

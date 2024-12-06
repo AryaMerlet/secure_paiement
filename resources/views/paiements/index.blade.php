@@ -46,10 +46,11 @@
                     <td>{{ $paiement->price }}</td>
                     <td>{{ $paiement->refunded_amount }}</td>
                     <td>{{ $paiement->price - $paiement->refunded_amount }}</td>
+                    @if ($user->can('refund', $paiement))
                     <td>
-                        @if ($user->can('refund', $paiement))
+
                             <a href="{{ route('paiements.edit', $paiement) }}" class="btn btn-sm btn-warning">Edit</a>
-                        @endif
+
                         {{-- <form action="{{ route('paiements.destroy', $paiement) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
@@ -58,6 +59,7 @@
                             </button>
                         </form> --}}
                     </td>
+                    @endif
                 </tr>
             @endforeach
         </tbody>

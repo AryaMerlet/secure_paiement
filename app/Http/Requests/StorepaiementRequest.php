@@ -16,14 +16,17 @@ class StorepaiementRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * Summary of rules
+     * @return array
      */
     public function rules(): array
     {
+        $paiement = $this->route('paiement');
+
         return [
-            //
+            'price' => ['required', 'numeric', 'min:0'],
+            'user_id' => ['required', 'exists:users,id'],
+            'card_id' => ['required', 'exists:cards,id'],
         ];
     }
 }

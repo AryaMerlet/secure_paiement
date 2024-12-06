@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Auth;
 class UpdatepaiementRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Summary of authorize
+     * @return bool
      */
     public function authorize(): bool
     {
@@ -16,9 +17,8 @@ class UpdatepaiementRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * Summary of rules
+     * @return string[][]
      */
     public function rules()
     {
@@ -31,6 +31,16 @@ class UpdatepaiementRequest extends FormRequest
                 'min:0',
                 'max:' . ($paiement->price - $paiement->refunded_amount),
             ],
+        ];
+    }
+    /**
+     * Summary of messages
+     * @return string[]
+     */
+    public function messages()
+    {
+        return [
+            'refund_amount.max' => 'The refund amount cannot exceed the remaining amount to be refunded.',
         ];
     }
 }

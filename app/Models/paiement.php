@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $user_id
@@ -51,5 +51,20 @@ class paiement extends Model
     public function card()
     {
         return $this->belongsTo(Card::class);
+    }
+    /**
+     * Summary of boot
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($paiement) {
+            do {
+                $token = Str::random(32); // Generate a random 32-character token
+            } while (self::where('token', $token)->exists()); // Ensure uniqueness
+            $paiement->token = $token;
+        });
     }
 }
